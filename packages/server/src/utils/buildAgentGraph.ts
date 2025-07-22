@@ -176,7 +176,9 @@ export const buildAgentGraph = async ({
                                 ? output[agentName].messages[output[agentName].messages.length - 1]?.additional_kwargs?.nodeId
                                 : ''
                             const usedTools = output[agentName]?.messages
-                                ? output[agentName].messages.map((msg: BaseMessage) => msg.additional_kwargs?.usedTools)
+                                ? flatten(
+                                      output[agentName].messages.map((msg: BaseMessage) => (typeof msg === 'string' ? msg : msg.content))
+                                  )
                                 : []
                             const sourceDocuments = output[agentName]?.messages
                                 ? output[agentName].messages.map((msg: BaseMessage) => msg.additional_kwargs?.sourceDocuments)
@@ -185,7 +187,9 @@ export const buildAgentGraph = async ({
                                 ? output[agentName].messages.map((msg: BaseMessage) => msg.additional_kwargs?.artifacts)
                                 : []
                             const messages = output[agentName]?.messages
-                                ? output[agentName].messages.map((msg: BaseMessage) => (typeof msg === 'string' ? msg : msg.content))
+                                ? flatten(
+                                      output[agentName].messages.map((msg: BaseMessage) => (typeof msg === 'string' ? msg : msg.content))
+                                  )
                                 : []
                             lastMessageRaw = output[agentName]?.messages
                                 ? output[agentName].messages[output[agentName].messages.length - 1]

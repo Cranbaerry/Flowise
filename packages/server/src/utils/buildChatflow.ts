@@ -146,7 +146,8 @@ const getChatHistory = async ({
     incomingInput,
     chatId,
     isInternal,
-    isAgentFlow
+    isAgentFlow,
+    chatHistoryLimit
 }: {
     endingNodes: IReactFlowNode[]
     nodes: IReactFlowNode[]
@@ -157,6 +158,7 @@ const getChatHistory = async ({
     chatId: string
     isInternal: boolean
     isAgentFlow: boolean
+    chatHistoryLimit?: number
 }): Promise<IMessage[]> => {
     const prependMessages = incomingInput.history ?? []
     let chatHistory: IMessage[] = []
@@ -177,7 +179,8 @@ const getChatHistory = async ({
                 appDataSource,
                 databaseEntities,
                 logger,
-                prependMessages
+                prependMessages,
+                chatHistoryLimit
             )
         }
         return chatHistory
@@ -469,7 +472,8 @@ export const executeFlow = async ({
         incomingInput,
         chatId,
         isInternal,
-        isAgentFlow
+        isAgentFlow,
+        chatHistoryLimit: incomingInput.chatHistoryLimit
     })
 
     /*** Get API Config ***/

@@ -1773,7 +1773,8 @@ export const getSessionChatHistory = async (
     appDataSource: DataSource,
     databaseEntities: IDatabaseEntity,
     logger: any,
-    prependMessages?: IMessage[]
+    prependMessages?: IMessage[],
+    chatHistoryLimit?: number
 ): Promise<IMessage[]> => {
     const nodeInstanceFilePath = componentNodes[memoryNode.data.name].filePath as string
     const nodeModule = await import(nodeInstanceFilePath)
@@ -1782,6 +1783,9 @@ export const getSessionChatHistory = async (
     // Replace memory's sessionId/chatId
     if (memoryNode.data.inputs) {
         memoryNode.data.inputs.sessionId = sessionId
+        if (chatHistoryLimit) {
+            memoryNode.data.inputs.chatHistoryLimit = chatHistoryLimit
+        }
     }
 
     const initializedInstance: FlowiseMemory = await newNodeInstance.init(memoryNode.data, '', {
